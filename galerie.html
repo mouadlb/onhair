@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galerie - ON h'AIR</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;700&family=Montserrat:wght@300;400;500;600&display=swap');
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            scroll-behavior: smooth;
+            background-color: #FEFBF3; /* Light beige for content background */
+        }
+        
+        .title-font {
+            font-family: 'Cormorant Garamond', serif;
+        }
+        
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
+                        url('bg-hero.png'); /* Assurez-vous que cette image est disponible ou utilisez une URL complète */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        
+        .wavy-underline {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .wavy-underline::after {
+            content: "";
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 100%;
+            height: 12px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 12'%3E%3Cpath fill='none' stroke='%23b91c1c' stroke-width='2' d='M0,6 C3,3 7,9 10,6 C13,3 17,9 20,6' /%3E%3C/svg%3E") repeat-x;
+            background-size: 20px 12px;
+        }
+        
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #b91c1c;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+        }
+        .nav-link.active {
+            color: #b91c1c; /* Texte rouge pour le lien actif */
+        }
+        
+        .logo {
+            text-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            animation: glow 2s infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 0 0 5px rgba(185, 28, 28, 0.5); }
+            to { text-shadow: 0 0 15px rgba(185, 28, 28, 0.8); }
+        }
+        
+        .btn-shine {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-shine::after {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 40px;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(30deg);
+            transition: all 0.5s;
+        }
+        
+        .btn-shine:hover::after { left: 120%; }
+        
+        /* Styles pour l'animation d'apparition au défilement */
+        .reveal-on-scroll {
+            opacity: 0;
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            will-change: opacity, transform;
+        }
+        .reveal-on-scroll.initial-slide-up {
+            transform: translateY(30px);
+        }
+        .reveal-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .gallery-item img {
+            transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+        }
+        .gallery-item:hover img {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body class="bg-amber-50">
+
+    <!-- En-tête adapté pour la page Galerie -->
+    <header class="hero-section min-h-[40vh] md:min-h-[50vh] flex flex-col justify-center items-center text-white pt-16 md:pt-0"> 
+        <div class="container mx-auto px-4 text-center reveal-on-scroll w-full relative pt-16 md:pt-0">
+
+            <!-- Bouton Hamburger (Mobile Only) - Positionné en haut à droite de la page -->
+            <div class="md:hidden fixed top-6 right-6 z-50"> 
+                <button id="hamburger-button" type="button" class="text-white focus:outline-none" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="mobile-menu-dropdown">
+                    <i class="fas fa-bars text-3xl"></i>
+                </button>
+            </div>
+
+            <!-- Menu Déroulant Mobile (Mobile Only) -->
+            <ul id="mobile-menu-dropdown"
+                class="hidden md:hidden fixed top-[5rem] right-6 w-60 bg-gray-800 bg-opacity-95 rounded-md shadow-lg p-5 z-40 {/* Changed absolute to fixed, adjusted top */}
+                       flex flex-col items-start space-y-4 text-lg">
+                <li><a href="index.html" class="nav-link font-medium text-white hover:text-red-400 block w-full">Home</a></li>
+                <li><a href="index.html#artistes" class="nav-link font-medium text-white hover:text-red-400 block w-full">Artistes</a></li>
+                <li><a href="prestations.html" class="nav-link font-medium text-white hover:text-red-400 block w-full">Prestations</a></li>
+                <li><a href="galerie.html" class="nav-link font-medium text-red-400 block w-full">Galerie</a></li>
+                <li><a href="index.html#avis" class="nav-link font-medium text-white hover:text-red-400 block w-full">Avis</a></li>
+                <li><a href="index.html#visite" class="nav-link font-medium text-white hover:text-red-400 block w-full">Visite salon</a></li>
+            </ul>
+
+            <nav class="w-full mt-6 md:mt-8 mb-6 md:mb-8">
+                <!-- Liens de navigation Desktop -->
+                <ul class="hidden md:flex md:flex-wrap md:justify-center md:items-center md:gap-x-6 md:gap-y-2 md:text-lg">
+                    <li><a href="index.html" class="nav-link font-medium ">Home</a></li>
+                    <li><a href="index.html#artistes" class="nav-link font-medium">Artistes</a></li>
+                    <li><a href="prestations.html" class="nav-link font-medium">Prestations</a></li>
+                    <li><a href="galerie.html" class="nav-link font-medium ">Galerie</a></li>
+                    <li><a href="index.html#avis" class="nav-link font-medium">Avis</a></li>
+                    <li><a href="index.html#visite" class="nav-link font-medium">Visite salon</a></li>
+                </ul>
+            </nav>
+
+            <a href="index.html" class="block mb-6 md:mb-8"> 
+                <h1 class=""> 
+                    <img src="onhair-logo.png" alt="ON h'AIR Logo" class="h-64 md:h-[40rem] mx-auto"> 
+                </h1>
+            </a>
+            <h2 class="text-3xl md:text-4xl title-font mb-6 md:mb-8 reveal-on-scroll initial-slide-up" style="transition-delay: 0.2s;">Notre Galerie Inspirante</h2>
+        </div>
+    </header>
+
+    <!-- Section Principale de la Galerie -->
+    <main id="galerie-details" class="py-16 md:py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12 md:mb-16">
+                <h2 class="title-font text-3xl md:text-4xl text-gray-800 reveal-on-scroll initial-slide-up">
+                    <span class="wavy-underline">Explorez Nos Créations</span>
+                </h2>
+                <p class="text-gray-600 mt-4 max-w-2xl mx-auto reveal-on-scroll initial-slide-up" style="transition-delay: 0.2s;">
+                    Découvrez un aperçu de notre savoir-faire, l'ambiance de notre salon et l'inspiration derrière chaque transformation.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6" id="gallery-grid">
+                <!-- Les images de la galerie seront ajoutées ici. Exemple : -->
+                <div class="gallery-item reveal-on-scroll initial-slide-up rounded-lg overflow-hidden aspect-square">
+                    <img src="https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Image Galerie 1" class="w-full h-full object-cover">
+                </div>
+                <div class="gallery-item reveal-on-scroll initial-slide-up rounded-lg overflow-hidden aspect-square" style="transition-delay: 0.1s;">
+                    <img src="https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Image Galerie 2" class="w-full h-full object-cover">
+                </div>
+                <div class="gallery-item reveal-on-scroll initial-slide-up rounded-lg overflow-hidden aspect-square" style="transition-delay: 0.2s;">
+                    <img src="https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Image Galerie 3" class="w-full h-full object-cover">
+                </div>
+                <div class="gallery-item reveal-on-scroll initial-slide-up rounded-lg overflow-hidden aspect-square" style="transition-delay: 0.3s;">
+                    <img src="https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Image Galerie 4" class="w-full h-full object-cover">
+                </div>
+                <div class="gallery-item reveal-on-scroll initial-slide-up rounded-lg overflow-hidden aspect-square" style="transition-delay: 0.4s;">
+                    <img src="https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Image Galerie 5" class="w-full h-full object-cover">
+                </div>
+                <div class="gallery-item reveal-on-scroll initial-slide-up rounded-lg overflow-hidden aspect-square" style="transition-delay: 0.5s;">
+                    <img src="https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Image Galerie 6" class="w-full h-full object-cover">
+                </div>
+                 <!-- Ajoutez plus d'images ici en suivant le même modèle -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Pied de page (Identique aux autres pages) -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+                <div class="bg-gray-700 rounded-lg p-8 shadow-md reveal-on-scroll initial-slide-up">
+                    <h3 class="title-font text-2xl mb-6 text-center">Infos de contact</h3>
+                    <div class="space-y-4 text-center">
+                        <p class="flex items-center justify-center"><i class="fas fa-map-marker-alt mr-3 text-red-400"></i> 123 Rue de la Beauté, 75000 Paris</p>
+                        <p class="flex items-center justify-center"><i class="fas fa-phone mr-3 text-red-400"></i> 01 23 45 67 89</p>
+                        <p class="flex items-center justify-center"><i class="fas fa-envelope mr-3 text-red-400"></i> contact@onhair-salon.com</p>
+                        <p class="flex items-center justify-center"><i class="fas fa-clock mr-3 text-red-400"></i> Lun-Sam : 9h-20h</p>
+                    </div>
+                    <div class="mt-6 text-center">
+                        <a href="tel:+33123456789" class="btn-shine bg-red-700 hover:bg-red-800 text-white px-6 py-3 rounded-full font-medium transition text-base shadow-md inline-block">
+                            <i class="fas fa-phone-alt mr-2"></i> Appeler Maintenant
+                        </a>
+                    </div>
+                </div>
+                <div class="bg-gray-700 rounded-lg p-8 shadow-md reveal-on-scroll initial-slide-up" style="transition-delay: 0.2s;">
+                    <h3 class="title-font text-2xl mb-6 text-center">Suivez-nous</h3>
+                    <div class="flex justify-center space-x-4 mb-6">
+                        <a href="#" class="w-12 h-12 rounded-full bg-red-700 flex items-center justify-center hover:bg-red-800 transition transform hover:scale-110"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="w-12 h-12 rounded-full bg-red-700 flex items-center justify-center hover:bg-red-800 transition transform hover:scale-110"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="w-12 h-12 rounded-full bg-red-700 flex items-center justify-center hover:bg-red-800 transition transform hover:scale-110"><i class="fab fa-pinterest-p"></i></a>
+                        <a href="#" class="w-12 h-12 rounded-full bg-red-700 flex items-center justify-center hover:bg-red-800 transition transform hover:scale-110"><i class="fab fa-youtube"></i></a>
+                    </div>
+                    <p class="text-center text-gray-300 mb-4">Abonnez-vous à notre newsletter</p>
+                    <div class="flex max-w-md mx-auto">
+                        <input type="email" placeholder="Votre email" class="flex-grow px-4 py-3 rounded-l-full focus:outline-none text-gray-800">
+                        <button class="bg-red-700 hover:bg-red-800 px-6 py-3 rounded-r-full transition"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                    <div class="mt-6 text-center">
+                        <a href="tel:+33123456789" class="btn-shine bg-red-700 hover:bg-red-800 text-white px-6 py-3 rounded-full font-medium transition text-base shadow-md inline-block">
+                            <i class="fas fa-phone-alt mr-2"></i> Appeler Maintenant
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-12 pt-8 text-center text-gray-400">
+                <p>&copy; <span id="currentYear"></span> ON h'AIR - Salon de Coiffure & Massage. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const ACTIVATE_ON_MOBILE_ONLY = true; // Mettre à true pour mobile-only, false pour toutes tailles
+            const MOBILE_BREAKPOINT = 768; // md breakpoint de Tailwind
+
+            const isMobile = window.innerWidth < MOBILE_BREAKPOINT;
+            let scrollObserver = null;
+
+            const elementsToReveal = document.querySelectorAll('.reveal-on-scroll');
+
+            if (!ACTIVATE_ON_MOBILE_ONLY || isMobile) {
+                if (elementsToReveal.length > 0) {
+                    const observerOptions = {
+                        root: null,
+                        rootMargin: '0px',
+                        threshold: 0.1 
+                    };
+                    scrollObserver = new IntersectionObserver((entries, observerInstance) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add('is-visible');
+                                observerInstance.unobserve(entry.target);
+                            }
+                        });
+                    }, observerOptions);
+                    elementsToReveal.forEach(element => {
+                        if (scrollObserver) {
+                           scrollObserver.observe(element);
+                        }
+                    });
+                }
+            } else {
+                elementsToReveal.forEach(element => {
+                    element.classList.add('is-visible');
+                });
+            }
+
+            // Gestion du menu hamburger
+            const hamburgerButton = document.getElementById('hamburger-button');
+            const mobileMenu = document.getElementById('mobile-menu-dropdown'); // Cibler le nouveau menu mobile
+            const body = document.body;
+
+            if (hamburgerButton && mobileMenu) {
+                hamburgerButton.addEventListener('click', function() {
+                    const isHidden = mobileMenu.classList.toggle('hidden');
+                    mobileMenu.classList.toggle('flex');
+                    hamburgerButton.setAttribute('aria-expanded', !isHidden);
+                    // body.classList.toggle('overflow-hidden', !isHidden);
+
+                    const icon = hamburgerButton.querySelector('i');
+                    if (!isHidden) { // Menu is open
+                        icon.classList.remove('fa-bars');
+                        icon.classList.add('fa-times');
+                    } else { // Menu is closed
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    }
+                });
+
+                mobileMenu.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        if (window.innerWidth < 768) { // md breakpoint
+                            mobileMenu.classList.add('hidden');
+                            mobileMenu.classList.remove('flex');
+                            hamburgerButton.setAttribute('aria-expanded', 'false');
+                            // body.classList.remove('overflow-hidden');
+                            hamburgerButton.querySelector('i').classList.remove('fa-times');
+                            hamburgerButton.querySelector('i').classList.add('fa-bars');
+                        }
+                    });
+                });
+            }
+
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    const hrefAttribute = this.getAttribute('href');
+                    if (hrefAttribute.startsWith('#') && document.getElementById(hrefAttribute.substring(1))) {
+                        e.preventDefault();
+                        document.querySelector(hrefAttribute).scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+            // Vous pouvez ajouter ici du JavaScript spécifique à la galerie si besoin (ex: lightbox)
+            // Pour l'instant, la grille d'images est statique mais animée au scroll.
+        });
+    </script>
+</body>
+</html>

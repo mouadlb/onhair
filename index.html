@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ON h'AIR - Salon de coiffure & massage</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;700&family=Montserrat:wght@300;400;500;600&display=swap');
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            scroll-behavior: smooth;
+        }
+        
+        .title-font {
+            font-family: 'Cormorant Garamond', serif;
+        }
+        
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
+                        url('bg-hero.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        
+        .philosophy-section {
+            background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), 
+                        url('https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        
+        .wavy-underline {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .wavy-underline::after {
+            content: "";
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 100%;
+            height: 12px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 12'%3E%3Cpath fill='none' stroke='%23b91c1c' stroke-width='2' d='M0,6 C3,3 7,9 10,6 C13,3 17,9 20,6' /%3E%3C/svg%3E") repeat-x;
+            background-size: 20px 12px;
+        }
+        
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .service-card {
+            transition: all 0.3s ease;
+            perspective: 1000px;
+        }
+        
+        .service-card:hover .service-card-inner {
+            transform: rotateY(10deg);
+        }
+        
+        .service-card-inner {
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        
+        .testimonial-card {
+            transition: all 0.4s ease;
+        }
+        
+        .testimonial-card:hover {
+            transform: translateY(-5px) scale(1.02);
+        }
+        
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #b91c1c;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        .nav-link.active {
+            color: #b91c1c; /* Red text for active link */
+        }
+        .nav-link.active::after {
+            width: 100%;
+            background-color: #b91c1c; 
+        }
+        
+        .logo {
+            text-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            animation: glow 2s infinite alternate;
+        }
+        
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 5px rgba(185, 28, 28, 0.5);
+            }
+            to {
+                text-shadow: 0 0 15px rgba(185, 28, 28, 0.8);
+            }
+        }
+        
+        .btn-shine {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-shine::after {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 40px;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(30deg);
+            transition: all 0.5s;
+        }
+        
+        .btn-shine:hover::after {
+            left: 120%;
+        }
+        
+        .fade-in {
+            animation: fadeIn 1.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .slide-up {
+            animation: slideUp 1s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+    </style>
+</head>
+<body class="bg-amber-50">
+    <!-- En-tête avec image de fond -->
+    <header class="hero-section min-h-screen flex flex-col justify-center items-center text-white pt-16 md:pt-0"> 
+        <div class="container mx-auto px-4 fade-in flex flex-col items-center w-full relative pt-16 md:pt-0"> 
+            
+            <!-- Bouton Hamburger (Mobile Only) - Positionné en haut à droite de la page -->
+            <div class="md:hidden fixed top-6 right-6 z-50"> 
+                <button id="hamburger-button" type="button" class="text-white focus:outline-none" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="mobile-menu-dropdown">
+                    <i class="fas fa-bars text-3xl"></i>
+                </button>
+            </div>
+
+            <!-- Menu Déroulant Mobile (Mobile Only) -->
+            <ul id="mobile-menu-dropdown"
+                class="hidden md:hidden fixed top-[5rem] right-6 w-60 bg-gray-800 bg-opacity-95 rounded-md shadow-lg p-5 z-40 {/* Changed absolute to fixed, adjusted top */}
+                       flex flex-col items-start space-y-4 text-lg">
+                <li><a href="index.html" class="nav-link font-medium text-red-400 block w-full">Home</a></li>
+                <li><a href="#artistes" class="nav-link font-medium text-white hover:text-red-400 block w-full">Artistes</a></li>
+                <li><a href="prestations.html" class="nav-link font-medium text-white hover:text-red-400 block w-full">Prestations</a></li>
+                <li><a href="galerie.html" class="nav-link font-medium text-white hover:text-red-400 block w-full">Galerie</a></li>
+                <li><a href="#avis" class="nav-link font-medium text-white hover:text-red-400 block w-full">Avis</a></li>
+                <li><a href="#visite" class="nav-link font-medium text-white hover:text-red-400 block w-full">Visite salon</a></li>
+            </ul>
+            
+            <!-- Barre de navigation Desktop (reste au-dessus du logo sur cette page) -->
+            <nav class="w-full mt-6 md:mt-8 mb-6 md:mb-8">
+                <!-- Liens de navigation Desktop -->
+                <ul class="hidden md:flex md:flex-wrap md:justify-center md:items-center md:gap-x-6 md:gap-y-2 md:text-lg">
+                    <li><a href="index.html" class="nav-link font-medium active">Home</a></li>
+                    <li><a href="#artistes" class="nav-link font-medium">Artistes</a></li>
+                    <li><a href="prestations.html" class="nav-link font-medium">Prestations</a></li>
+                    <li><a href="galerie.html" class="nav-link font-medium">Galerie</a></li>
+                    <li><a href="#avis" class="nav-link font-medium">Avis</a></li>
+                    <li><a href="#visite" class="nav-link font-medium">Visite salon</a></li>
+                </ul>
+            </nav>
+            
+            <!-- Logo/Titre principal -->
+            <h1 class="mb-6 md:mb-8"> 
+                <img src="onhair-logo.png" alt="ON h'AIR Logo" class="h-64 md:h-[40rem]"> 
+                <!-- La taille du logo reste la même, ajustez si besoin -->
+            </h1>
+
+            <!-- Bouton d'appel -->
+            <div class="mb-8 md:mb-10">
+                <a href="tel:+33123456789" class="btn-shine bg-red-700 hover:bg-red-800 text-white px-8 py-3 rounded-full font-medium transition text-lg shadow-lg inline-block">
+                    <i class="fas fa-phone-alt mr-2"></i> Appeler Maintenant
+                </a>
+            </div>
+            
+            <div class="mt-10 animate-bounce">
+                <a href="#philosophie" class="text-white text-4xl">
+                    <i class="fas fa-chevron-down"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Section Philosophie -->
+    <section id="philosophie" class="philosophy-section py-20">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto bg-white bg-opacity-90 p-8 md:p-12 rounded-lg shadow-lg slide-up">
+                <h2 class="title-font text-3xl md:text-4xl text-center text-gray-800 mb-8">
+                    <span class="wavy-underline">Philosophie du salon</span>
+                </h2>
+                <div class="text-gray-700 space-y-6">
+                    <p class="text-lg">Depuis 2010, ON h'AIR incarne l'excellence dans l'art de la coiffure et du bien-être. Notre salon est un écrin de raffinement où chaque détail a été pensé pour votre confort et votre épanouissement.</p>
+                    <p class="text-lg">Nous sélectionnons avec exigence des produits d'exception, alliant performance et respect de votre santé. Nos artistes, véritables artisans de la beauté, suivent régulièrement des formations pour perfectionner leur art.</p>
+                    <p class="text-lg">Dans notre espace chaleureux aux tonalités boisées et aux lumières douces, nous créons une expérience sensorielle unique où le temps semble suspendu. Chaque prestation est un moment privilégié, une parenthèse de douceur dans votre quotidien.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Nos Artistes -->
+    <section id="artistes" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="title-font text-3xl md:text-4xl text-center text-gray-800 mb-16">
+                <span class="wavy-underline">Nos Artistes</span>
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <!-- Artiste 1 -->
+                <div class="card-hover bg-white rounded-lg overflow-hidden shadow-lg p-6 text-center border border-gray-100">
+                    <div class="w-40 h-40 mx-auto mb-6 rounded-full bg-gradient-to-br from-amber-50 to-red-50 flex items-center justify-center shadow-inner">
+                        <img src="https://images.unsplash.com/photo-1552374196-c4e7ffc6e126?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80" 
+                             alt="NABIL" class="w-full h-full object-cover rounded-full">
+                    </div>
+                    <h3 class="title-font text-2xl text-gray-800 mb-2">NABIL</h3>
+                    <p class="text-gray-600 mb-6">Maître coloriste - 15 ans d'expérience</p>
+                    <button class="btn-shine bg-red-700 hover:bg-red-800 text-white px-8 py-3 rounded-full font-medium transition">
+                        Voir Bio
+                    </button>
+                </div>
+                
+                <!-- Artiste 2 -->
+                <div class="card-hover bg-white rounded-lg overflow-hidden shadow-lg p-6 text-center border border-gray-100">
+                    <div class="w-40 h-40 mx-auto mb-6 rounded-full bg-gradient-to-br from-amber-50 to-red-50 flex items-center justify-center shadow-inner">
+                        <img src="https://images.unsplash.com/photo-1552374196-c4e7ffc6e126?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80" 
+                             alt="FAHD" class="w-full h-full object-cover rounded-full">
+                    </div>
+                    <h3 class="title-font text-2xl text-gray-800 mb-2">FAHD</h3>
+                    <p class="text-gray-600 mb-6">Expert en soins capillaires</p>
+                    <button class="btn-shine bg-red-700 hover:bg-red-800 text-white px-8 py-3 rounded-full font-medium transition">
+                        Voir Bio
+                    </button>
+                </div>
+                
+                <!-- Artiste 3 -->
+                <div class="card-hover bg-white rounded-lg overflow-hidden shadow-lg p-6 text-center border border-gray-100">
+                    <div class="w-40 h-40 mx-auto mb-6 rounded-full bg-gradient-to-br from-amber-50 to-red-50 flex items-center justify-center shadow-inner">
+                        <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80" 
+                             alt="NAZHA" class="w-full h-full object-cover rounded-full">
+                    </div>
+                    <h3 class="title-font text-2xl text-gray-800 mb-2">NAZHA</h3>
+                    <p class="text-gray-600 mb-6">Styliste coupe - Spécialiste tendances</p>
+                    <button class="btn-shine bg-red-700 hover:bg-red-800 text-white px-8 py-3 rounded-full font-medium transition">
+                        Voir Bio
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Prestations -->
+    <section id="prestations" class="py-20 bg-amber-50">
+        <div class="container mx-auto px-4">
+            <h2 class="title-font text-3xl md:text-4xl text-center text-gray-800 mb-16">
+                <span class="wavy-underline">Prestations</span>
+            </h2>
+            
+            <div class="relative max-w-6xl mx-auto">
+                <!-- Flèche gauche -->
+                <button id="prev-prestation" class="absolute left-0 top-1/2 -translate-y-1/2 -ml-4 bg-red-700 text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg hover:bg-red-800 transition z-10">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                
+                <div id="prestations-carousel-container" class="flex overflow-x-auto py-2 space-x-4 scrollbar-hide">            
+                    <!-- Prestation 2 -->
+                    <div class="service-card h-full flex-shrink-0 w-[280px] sm:w-[300px]">
+                        <div class="service-card-inner h-full bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100 flex flex-col">
+                            <div class="h-48 overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1519699047748-de8e457a634e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" 
+                                     alt="Soins" class="w-full h-full object-cover transition duration-500 hover:scale-110">
+                            </div>
+                            <div class="p-6 flex-grow">
+                                <h3 class="title-font text-2xl text-gray-800 mb-4">Soins</h3>
+                                <p class="text-gray-600 mb-6">Une gamme complète de soins capillaires et massages du cuir chevelu pour des cheveux revitalisés et en pleine santé.</p>
+                            </div>
+                            <div class="px-6 pb-6">
+                                <button class="btn-shine w-full bg-red-700 hover:bg-red-800 text-white px-6 py-3 rounded-full font-medium transition">
+                                    Découvrir
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Prestation 3 -->
+                    <div class="service-card h-full flex-shrink-0 w-[280px] sm:w-[300px]">
+                        <div class="service-card-inner h-full bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100 flex flex-col">
+                            <div class="h-48 overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1519699047748-de8e457a634e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" 
+                                     alt="Coupes" class="w-full h-full object-cover transition duration-500 hover:scale-110">
+                            </div>
+                            <div class="p-6 flex-grow">
+                                <h3 class="title-font text-2xl text-gray-800 mb-4">Coupes</h3>
+                                <p class="text-gray-600 mb-6">Des coupes sur mesure adaptées à votre morphologie et à votre personnalité, réalisées par nos stylistes experts.</p>
+                            </div>
+                            <div class="px-6 pb-6">
+                                <button class="btn-shine w-full bg-red-700 hover:bg-red-800 text-white px-6 py-3 rounded-full font-medium transition">
+                                    Découvrir
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="service-card h-full flex-shrink-0 w-[280px] sm:w-[300px]">
+                        <div class="service-card-inner h-full bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100 flex flex-col">
+                            <div class="h-48 overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1519699047748-de8e457a634e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" 
+                                     alt="Coupes" class="w-full h-full object-cover transition duration-500 hover:scale-110">
+                            </div>
+                            <div class="p-6 flex-grow">
+                                <h3 class="title-font text-2xl text-gray-800 mb-4">soins visage</h3>
+                                <p class="text-gray-600 mb-6">Des coupes sur mesure adaptées à votre morphologie et à votre personnalité, réalisées par nos stylistes experts.</p>
+                            </div>
+                            <div class="px-6 pb-6">
+                                <button class="btn-shine w-full bg-red-700 hover:bg-red-800 text-white px-6 py-3 rounded-full font-medium transition">
+                                    Découvrir
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="service-card h-full flex-shrink-0 w-[280px] sm:w-[300px]">
+                        <div class="service-card-inner h-full bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100 flex flex-col">
+                            <div class="h-48 overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1519699047748-de8e457a634e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" 
+                                     alt="Coupes" class="w-full h-full object-cover transition duration-500 hover:scale-110">
+                            </div>
+                            <div class="p-6 flex-grow">
+                                <h3 class="title-font text-2xl text-gray-800 mb-4">Coupes</h3>
+                                <p class="text-gray-600 mb-6">Des coupes sur mesure adaptées à votre morphologie et à votre personnalité, réalisées par nos stylistes experts.</p>
+                            </div>
+                            <div class="px-6 pb-6">
+                                <button class="btn-shine w-full bg-red-700 hover:bg-red-800 text-white px-6 py-3 rounded-full font-medium transition">
+                                    Découvrir
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Flèche droite -->
+                <button id="next-prestation" class="absolute right-0 top-1/2 -translate-y-1/2 -mr-4 bg-red-700 text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg hover:bg-red-800 transition z-10">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Avis Clients -->
+    <section id="avis" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="title-font text-3xl md:text-4xl text-center text-gray-800 mb-16">
+                <span class="wavy-underline">Avis clients</span>
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <!-- Avis 1 -->
+                <div class="testimonial-card bg-amber-50 rounded-lg p-8 shadow-md border border-amber-100">
+                    <div class="flex items-center mb-6">
+                        <div class="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center mr-4">
+                            <i class="fas fa-user text-red-700 text-2xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="title-font text-xl text-gray-800">Marie D.</h4>
+                            <div class="flex text-amber-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 italic">"Une expérience exceptionnelle ! Nabil a réalisé une coloration parfaite qui a dépassé toutes mes attentes. Le salon est magnifique et l'accueil chaleureux."</p>
+                </div>
+                
+                <!-- Avis 2 -->
+                <div class="testimonial-card bg-amber-50 rounded-lg p-8 shadow-md border border-amber-100">
+                    <div class="flex items-center mb-6">
+                        <div class="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center mr-4">
+                            <i class="fas fa-user text-red-700 text-2xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="title-font text-xl text-gray-800">Thomas L.</h4>
+                            <div class="flex text-amber-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 italic">"Massage relaxant et coupe impeccable. L'ambiance du salon est apaisante et le personnel très professionnel. Je reviendrai sans hésiter !"</p>
+                </div>
+                
+                <!-- Avis 3 -->
+                <div class="testimonial-card bg-amber-50 rounded-lg p-8 shadow-md border border-amber-100">
+                    <div class="flex items-center mb-6">
+                        <div class="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center mr-4">
+                            <i class="fas fa-user text-red-700 text-2xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="title-font text-xl text-gray-800">Sophie K.</h4>
+                            <div class="flex text-amber-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 italic">"Nazha a su comprendre exactement ce que je voulais et a réalisé une coupe magnifique. Le salon est sublime et les produits utilisés sont de qualité."</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Visite du salon -->
+    <section id="visite" class="py-20 bg-amber-50">
+        <div class="container mx-auto px-4">
+            <h2 class="title-font text-3xl md:text-4xl text-center text-gray-800 mb-16">
+                <span class="wavy-underline">Visite du salon 360°</span>
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                <!-- Photo 1 -->
+                <div class="group relative rounded-lg overflow-hidden shadow-lg h-64">
+                    <img src="https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" 
+                         alt="Espace coiffure" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6">
+                        <h3 class="text-white font-medium text-lg mb-2">Espace Coiffure</h3>
+                        <a href="#" class="text-red-300 hover:text-white font-medium flex items-center">
+                            Voir en 360° <i class="fas fa-external-link-alt ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Photo 2 -->
+                <div class="group relative rounded-lg overflow-hidden shadow-lg h-64">
+                    <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" 
+                         alt="Espace massage" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6">
+                        <h3 class="text-white font-medium text-lg mb-2">Espace Massage</h3>
+                        <a href="#" class="text-red-300 hover:text-white font-medium flex items-center">
+                            Voir en 360° <i class="fas fa-external-link-alt ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Photo 3 -->
+                <div class="group relative rounded-lg overflow-hidden shadow-lg h-64">
+                    <img src="https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" 
+                         alt="Salon d'attente" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6">
+                        <h3 class="text-white font-medium text-lg mb-2">Salon d'Attente</h3>
+                        <a href="#" class="text-red-300 hover:text-white font-medium flex items-center">
+                            Voir en 360° <i class="fas fa-external-link-alt ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <button class="btn-shine bg-red-700 hover:bg-red-800 text-white px-8 py-4 rounded-full shadow-lg font-medium text-lg transition">
+                    <i class="fas fa-vr-cardboard mr-2"></i> Visite Virtuelle Complète
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pied de page -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+                <!-- Infos de contact -->
+                <div class="bg-gray-700 rounded-lg p-8 shadow-md">
+                    <h3 class="title-font text-2xl mb-6 text-center">Infos de contact</h3>
+                    <div class="space-y-4 text-center">
+                        <p class="flex items-center justify-center">
+                            <i class="fas fa-map-marker-alt mr-3 text-red-400"></i> 123 Rue de la Beauté, 75000 Paris
+                        </p>
+                        <p class="flex items-center justify-center">
+                            <i class="fas fa-phone mr-3 text-red-400"></i> 01 23 45 67 89
+                        </p>
+                        <p class="flex items-center justify-center">
+                            <i class="fas fa-envelope mr-3 text-red-400"></i> contact@onhair-salon.com
+                        </p>
+                        <p class="flex items-center justify-center">
+                            <i class="fas fa-clock mr-3 text-red-400"></i> Lun-Sam : 9h-20h
+                        </p>
+                    </div>
+                    <!-- Bouton Appeler Maintenant -->
+                    <div class="mt-6 text-center">
+                        <a href="tel:+33123456789" class="btn-shine bg-red-700 hover:bg-red-800 text-white px-6 py-3 rounded-full font-medium transition text-base shadow-md inline-block">
+                            <i class="fas fa-phone-alt mr-2"></i> Appeler Maintenant
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Suivez-nous -->
+                <div class="bg-gray-700 rounded-lg p-8 shadow-md">
+                    <h3 class="title-font text-2xl mb-6 text-center">Suivez-nous</h3>
+                    <div class="flex justify-center space-x-4 mb-6">
+                        <a href="#" class="w-12 h-12 rounded-full bg-red-700 flex items-center justify-center hover:bg-red-800 transition">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-12 h-12 rounded-full bg-red-700 flex items-center justify-center hover:bg-red-800 transition">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-12 h-12 rounded-full bg-red-700 flex items-center justify-center hover:bg-red-800 transition">
+                            <i class="fab fa-pinterest-p"></i>
+                        </a>
+                        <a href="#" class="w-12 h-12 rounded-full bg-red-700 flex items-center justify-center hover:bg-red-800 transition">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                    <!-- Bouton Appeler Maintenant -->
+                    <div class="mt-6 text-center">
+                        <a href="tel:+33123456789" class="btn-shine bg-red-700 hover:bg-red-800 text-white px-6 py-3 rounded-full font-medium transition text-base shadow-md inline-block">
+                            <i class="fas fa-phone-alt mr-2"></i> Appeler Maintenant
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-12 pt-8 text-center text-gray-400">
+                <p>&copy; <span id="currentYear"></span> ON h'AIR - Salon de Coiffure & Massage. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Animation pour le défilement des prestations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animation au scroll
+            const animateOnScroll = function() {
+                const elements = document.querySelectorAll('.slide-up, .fade-in');
+                
+                elements.forEach(element => {
+                    const elementPosition = element.getBoundingClientRect().top;
+                    const screenPosition = window.innerHeight / 1.2;
+                    
+                    if (elementPosition < screenPosition) {
+                        element.style.opacity = '1';
+                        element.style.transform = 'translateY(0)';
+                    }
+                });
+            };
+            
+            // Initialisation des animations
+            window.addEventListener('load', animateOnScroll);
+            window.addEventListener('scroll', animateOnScroll);
+            
+            // Smooth scrolling pour les liens de navigation
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    const hrefAttribute = this.getAttribute('href');
+                    if (hrefAttribute.startsWith('#') && document.getElementById(hrefAttribute.substring(1))) {
+                        e.preventDefault();
+                        document.querySelector(hrefAttribute).scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // Prestations Carousel
+            const carouselContainer = document.getElementById('prestations-carousel-container');
+            const prevButton = document.getElementById('prev-prestation');
+            const nextButton = document.getElementById('next-prestation');
+
+            if (carouselContainer && prevButton && nextButton) {
+                const cards = carouselContainer.querySelectorAll('.service-card');
+
+                if (cards.length > 0) {
+                    let scrollAmount = 0;
+                    if (cards.length > 1) {
+                        // Calculate scroll amount based on the offset difference between the first two cards
+                        // This accounts for card width + margin/gap defined by space-x-4
+                        scrollAmount = cards[1].offsetLeft - cards[0].offsetLeft;
+                    } else {
+                        // Fallback if only one card, though scrolling wouldn't be very useful
+                        scrollAmount = cards[0].offsetWidth;
+                    }
+
+                    const updateCarouselButtons = () => {
+                        if (cards.length === 0 || scrollAmount === 0) { // No cards or no scroll possible
+                             prevButton.style.display = 'none';
+                             nextButton.style.display = 'none';
+                             return;
+                        }
+                        prevButton.style.display = 'flex'; // Ensure buttons are visible if cards exist
+                        nextButton.style.display = 'flex';
+
+                        const maxScrollLeft = carouselContainer.scrollWidth - carouselContainer.clientWidth;
+                        const tolerance = 2; // Pixel tolerance for floating point comparisons
+
+                        prevButton.disabled = carouselContainer.scrollLeft <= tolerance;
+                        nextButton.disabled = carouselContainer.scrollLeft >= maxScrollLeft - tolerance;
+
+                        prevButton.classList.toggle('opacity-50', prevButton.disabled);
+                        prevButton.classList.toggle('cursor-not-allowed', prevButton.disabled);
+                        nextButton.classList.toggle('opacity-50', nextButton.disabled);
+                        nextButton.classList.toggle('cursor-not-allowed', nextButton.disabled);
+                    };
+
+                    prevButton.addEventListener('click', () => {
+                        carouselContainer.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+                    });
+
+                    nextButton.addEventListener('click', () => {
+                        carouselContainer.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+                    });
+
+                    carouselContainer.addEventListener('scroll', updateCarouselButtons);
+                    window.addEventListener('resize', updateCarouselButtons); // Recalculate on resize
+                    updateCarouselButtons(); // Initial state
+                } else {
+                    prevButton.style.display = 'none';
+                    nextButton.style.display = 'none';
+                }
+            }
+
+            // Gestion du menu hamburger
+            const hamburgerButton = document.getElementById('hamburger-button');
+            const mobileMenu = document.getElementById('mobile-menu-dropdown'); // Cibler le nouveau menu mobile
+            const body = document.body;
+
+            if (hamburgerButton && mobileMenu) {
+                hamburgerButton.addEventListener('click', function() {
+                    const isHidden = mobileMenu.classList.toggle('hidden');
+                    mobileMenu.classList.toggle('flex'); // Assure que flex est appliqué quand pas hidden
+                    hamburgerButton.setAttribute('aria-expanded', !isHidden);
+                    // body.classList.toggle('overflow-hidden', !isHidden); // Plus nécessaire pour un menu déroulant simple
+
+                    const icon = hamburgerButton.querySelector('i');
+                    if (!isHidden) { // Menu is open
+                        icon.classList.remove('fa-bars');
+                        icon.classList.add('fa-times');
+                    } else { // Menu is closed
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    }
+                });
+
+                mobileMenu.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        if (window.innerWidth < 768) { // md breakpoint
+                            mobileMenu.classList.add('hidden');
+                            mobileMenu.classList.remove('flex');
+                            hamburgerButton.setAttribute('aria-expanded', 'false');
+                            // body.classList.remove('overflow-hidden');
+                            hamburgerButton.querySelector('i').classList.remove('fa-times');
+                            hamburgerButton.querySelector('i').classList.add('fa-bars');
+                        }
+                    });
+                });
+            }
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
+        });
+    </script>
+</body>
+</html>

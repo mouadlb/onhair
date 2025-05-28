@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nos Prestations - ON h'AIR</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;700&family=Montserrat:wght@300;400;500;600&display=swap');
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            scroll-behavior: smooth;
+            background-color: #FEFBF3; /* Light beige for content background */
+        }
+        
+        .title-font {
+            font-family: 'Cormorant Garamond', serif;
+        }
+        
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
+                        url('bg-hero.png'); /* Assurez-vous que cette image est disponible ou utilisez une URL complète */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        
+        .wavy-underline {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .wavy-underline::after {
+            content: "";
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 100%;
+            height: 12px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 12'%3E%3Cpath fill='none' stroke='%23b91c1c' stroke-width='2' d='M0,6 C3,3 7,9 10,6 C13,3 17,9 20,6' /%3E%3C/svg%3E") repeat-x;
+            background-size: 20px 12px;
+        }
+        
+        .service-card-item { /* Renommé pour éviter les conflits potentiels */
+            transition: all 0.3s ease;
+            perspective: 1000px;
+        }
+        
+        .service-card-item:hover .service-card-inner {
+            transform: rotateY(10deg) scale(1.03);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        
+        .service-card-inner {
+            transition: transform 0.6s, box-shadow 0.6s;
+            transform-style: preserve-3d;
+        }
+        
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #b91c1c;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+        }
+        .nav-link.active {
+            color: #b91c1c; /* Texte rouge pour le lien actif */
+        }
+        
+        .logo {
+            text-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            animation: glow 2s infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 0 0 5px rgba(185, 28, 28, 0.5); }
+            to { text-shadow: 0 0 15px rgba(185, 28, 28, 0.8); }
+        }
+        
+        .btn-shine {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-shine::after {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 40px;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(30deg);
+            transition: all 0.5s;
+        }
+        
+        .btn-shine:hover::after { left: 120%; }
+        
+        /* Styles pour l'animation d'apparition au défilement */
+        .reveal-on-scroll {
+            opacity: 0;
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            will-change: opacity, transform; /* Optimisation pour le navigateur */
+        }
+
+        /* État initial spécifique pour les éléments qui doivent "monter" */
+        .reveal-on-scroll.initial-slide-up {
+            transform: translateY(30px);
+        }
+        /* Pour les éléments qui font juste un fondu, .reveal-on-scroll suffit pour opacity:0 */
+
+        .reveal-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0); /* S'assure que le transform est réinitialisé à sa position finale */
+        }
+
+
+        .service-price {
+            font-weight: bold;
+            font-size: 1.125rem; /* text-lg */
+            color: #DC2626; /* text-red-600 */
+            margin-bottom: 0.75rem; /* mb-3 */
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+        }
+
+        /* Mobile: Price is visible by default */
+        @media (max-width: 767.98px) { /* Tailwind's 'md' breakpoint is 768px, so < md */
+            .service-price {
+                opacity: 1;
+                transform: translateY(0);
+                text-align: center;
+            }
+        }
+
+        /* Desktop: Price is hidden by default, shown on hover */
+        @media (min-width: 768px) { /* md breakpoint and up */
+            .service-price {
+                opacity: 0;
+                transform: translateY(10px); /* Start slightly below for animation */
+                text-align: left;
+            }
+            .service-card-item:hover .service-price {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body class="bg-amber-50">
+
+    <!-- En-tête adapté pour la page Prestations -->
+    <header class="hero-section min-h-[40vh] md:min-h-[50vh] flex flex-col justify-center items-center text-white pt-16 md:pt-0"> 
+        <div class="container mx-auto px-4 text-center reveal-on-scroll w-full relative pt-16 md:pt-0">
+
+            <!-- Bouton Hamburger (Mobile Only) - Positionné en haut à droite de la page -->
+            <div class="md:hidden fixed top-6 right-6 z-50"> 
+                <button id="hamburger-button" type="button" class="text-white focus:outline-none" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="mobile-menu-dropdown">
+                    <i class="fas fa-bars text-3xl"></i>
+                </button>
+            </div>
+
+            <!-- Menu Déroulant Mobile (Mobile Only) -->
+            <ul id="mobile-menu-dropdown"
+                class="hidden md:hidden fixed top-[5rem] right-6 w-60 bg-gray-800 bg-opacity-95 rounded-md shadow-lg p-5 z-40 {/* Changed absolute to fixed, adjusted top */}
+                       flex flex-col items-start space-y-4 text-lg">
+                <li><a href="index.html" class="nav-link font-medium text-white hover:text-red-400 block w-full">Home</a></li>
+                <li><a href="index.html#artistes" class="nav-link font-medium text-white hover:text-red-400 block w-full">Artistes</a></li>
+                <li><a href="prestations.html" class="nav-link font-medium text-red-400 block w-full">Prestations</a></li>
+                <li><a href="galerie.html" class="nav-link font-medium text-white hover:text-red-400 block w-full">Galerie</a></li>
+                <li><a href="index.html#avis" class="nav-link font-medium text-white hover:text-red-400 block w-full">Avis</a></li>
+                <li><a href="index.html#visite" class="nav-link font-medium text-white hover:text-red-400 block w-full">Visite salon</a></li>
+            </ul>
+
+            <!-- Barre de navigation Desktop - Moved above logo -->
+            <nav class="w-full mt-6 md:mt-8 mb-6 md:mb-8">
+                <ul class="hidden md:flex md:flex-wrap md:justify-center md:items-center md:gap-4 md:text-sm md:text-lg">
+                    <li><a href="index.html" class="nav-link font-medium">Home</a></li>
+                    <li><a href="index.html#artistes" class="nav-link font-medium">Artistes</a></li>
+                    <li><a href="prestations.html" class="nav-link font-medium active">Prestations</a></li>
+                    <li><a href="galerie.html" class="nav-link font-medium">Galerie</a></li>
+                    <li><a href="index.html#avis" class="nav-link font-medium">Avis</a></li>
+                    <li><a href="index.html#visite" class="nav-link font-medium">Visite salon</a></li>
+                </ul>
+            </nav>
+
+            <a href="index.html" class="block mb-6 md:mb-8"> 
+                <h1 class=""> 
+                    <img src="onhair-logo.png" alt="ON h'AIR Logo" class="h-64 md:h-[40rem] mx-auto"> 
+                </h1>
+            </a>
+            <h2 class="text-3xl md:text-4xl title-font mb-6 md:mb-8 reveal-on-scroll initial-slide-up" style="transition-delay: 0.2s;">Nos Prestations Exclusives</h2>
+        </div>
+    </header>
+
+    <!-- Section Principale des Prestations -->
+    <main id="prestations-details" class="py-16 md:py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12 md:mb-16">
+                <h2 class="title-font text-3xl md:text-4xl text-gray-800 reveal-on-scroll initial-slide-up">
+                    <span class="wavy-underline">Découvrez Nos Savoir-Faire</span>
+                </h2>
+                <p class="text-gray-600 mt-4 max-w-2xl mx-auto reveal-on-scroll initial-slide-up" style="transition-delay: 0.2s;">
+                    Chaque service est une promesse de qualité, de détente et de transformation, réalisé par nos artistes coiffeurs passionnés.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10" id="services-grid">
+                <!-- Les cartes de service seront injectées ici par JavaScript -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Pied de page (Copied from index.html - ensure consistency) -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+                <div class="bg-gray-700 rounded-lg p-8 shadow-md reveal-on-scroll initial-slide-up">
+                    <h3 class="title-font text-2xl mb-6 text-center">Infos de contact</h3>
+                    <div class="space-y-4 text-center">
+                        <p class="flex items-center justify-center"><i class="fas fa-map-marker-alt mr-3 text-red-400"></i> 123 Rue de la Beauté, 75000 Paris</p>
+                        <p class="flex items-center justify-center"><i class="fas fa-phone mr-3 text-red-400"></i> 01 23 45 67 89</p>
+                        <p class="flex items-center justify-center"><i class="fas fa-envelope mr-3 text-red-400"></i> contact@onhair-salon.com</p>
+                        <p class="flex items-center justify-center"><i class="fas fa-clock mr-3 text-red-400"></i> Lun-Sam : 9h-20h</p>
+                    </div>
+                    <!-- Bouton Appeler Maintenant -->
+                    <div class="mt-6 text-center">
+                        <a href="tel:+33123456789" class="btn-shine bg-red-700 hover:bg-red-800 text-white px-6 py-3 rounded-full font-medium transition text-base shadow-md inline-block">
+                            <i class="fas fa-phone-alt mr-2"></i> Appeler Maintenant
+                        </a>
+                    </div>
+                </div>
+                <div class="bg-gray-700 rounded-lg p-8 shadow-md reveal-on-scroll initial-slide-up" style="transition-delay: 0.2s;">
+                    <h3 class="title-font text-2xl mb-6 text-center">Suivez-nous</h3>
+                    <div class="flex justify-center space-x-4 mb-6">
+                        <a href="#" class="w-12 h-12 rounded-full bg-red-700 flex items-center justify-center hover:bg-red-800 transition transform hover:scale-110"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="w-12 h-12 rounded-full bg-red-700 flex items-center justify-center hover:bg-red-800 transition transform hover:scale-110"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="w-12 h-12 rounded-full bg-red-700 flex items-center justify-center hover:bg-red-800 transition transform hover:scale-110"><i class="fab fa-pinterest-p"></i></a>
+                        <a href="#" class="w-12 h-12 rounded-full bg-red-700 flex items-center justify-center hover:bg-red-800 transition transform hover:scale-110"><i class="fab fa-youtube"></i></a>
+                    </div>
+                    <p class="text-center text-gray-300 mb-4">Abonnez-vous à notre newsletter</p>
+                    <div class="flex max-w-md mx-auto">
+                        <input type="email" placeholder="Votre email" class="flex-grow px-4 py-3 rounded-l-full focus:outline-none text-gray-800">
+                        <button class="bg-red-700 hover:bg-red-800 px-6 py-3 rounded-r-full transition"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                    <!-- Bouton Appeler Maintenant -->
+                    <div class="mt-6 text-center">
+                        <a href="tel:+33123456789" class="btn-shine bg-red-700 hover:bg-red-800 text-white px-6 py-3 rounded-full font-medium transition text-base shadow-md inline-block">
+                            <i class="fas fa-phone-alt mr-2"></i> Appeler Maintenant
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-12 pt-8 text-center text-gray-400">
+                <p>&copy; <span id="currentYear"></span> ON h'AIR - Salon de Coiffure & Massage. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const ACTIVATE_ON_MOBILE_ONLY = true; // Mettre à true pour mobile-only, false pour toutes tailles
+            const MOBILE_BREAKPOINT = 768; // md breakpoint de Tailwind
+
+            const isMobile = window.innerWidth < MOBILE_BREAKPOINT;
+            let scrollObserver = null;
+
+            // Sélectionner tous les éléments à animer initialement présents dans le DOM
+            const elementsToReveal = document.querySelectorAll('.reveal-on-scroll');
+
+            if (!ACTIVATE_ON_MOBILE_ONLY || isMobile) {
+                // Mobile OU animation activée partout: initialiser l'observer
+                if (elementsToReveal.length > 0) {
+                    const observerOptions = {
+                        root: null,
+                        rootMargin: '0px',
+                        threshold: 0.1 // Déclenche quand 10% de l'élément est visible
+                    };
+
+                    scrollObserver = new IntersectionObserver((entries, observerInstance) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add('is-visible');
+                                observerInstance.unobserve(entry.target); // Arrêter d'observer une fois animé
+                            }
+                        });
+                    }, observerOptions);
+
+                    elementsToReveal.forEach(element => {
+                        // Les styles initiaux sont gérés par CSS (.reveal-on-scroll, .initial-slide-up)
+                        // Le délai de transition est appliqué via style inline si besoin
+                        if (scrollObserver) {
+                           scrollObserver.observe(element);
+                        }
+                    });
+                }
+            } else {
+                // Desktop et ACTIVATE_ON_MOBILE_ONLY est true: rendre tout visible immédiatement
+                elementsToReveal.forEach(element => {
+                    element.classList.add('is-visible');
+                    // Optionnel: forcer la suppression de la transition pour un affichage instantané
+                    // element.style.transition = 'none'; 
+                    // La classe .is-visible devrait suffire pour afficher correctement.
+                });
+            }
+
+            // Gestion du menu hamburger
+            const hamburgerButton = document.getElementById('hamburger-button');
+            const mobileMenu = document.getElementById('mobile-menu-dropdown'); // Cibler le nouveau menu mobile
+            const body = document.body;
+
+            if (hamburgerButton && mobileMenu) {
+                hamburgerButton.addEventListener('click', function() {
+                    const isHidden = mobileMenu.classList.toggle('hidden');
+                    mobileMenu.classList.toggle('flex'); 
+                    hamburgerButton.setAttribute('aria-expanded', !isHidden);
+                    // body.classList.toggle('overflow-hidden', !isHidden);
+
+                    const icon = hamburgerButton.querySelector('i');
+                    if (!isHidden) { // Menu is open
+                        icon.classList.remove('fa-bars');
+                        icon.classList.add('fa-times');
+                    } else { // Menu is closed
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    }
+                });
+
+                mobileMenu.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        if (window.innerWidth < 768) { // md breakpoint
+                            mobileMenu.classList.add('hidden');
+                            mobileMenu.classList.remove('flex');
+                            hamburgerButton.setAttribute('aria-expanded', 'false');
+                            // body.classList.remove('overflow-hidden');
+                            hamburgerButton.querySelector('i').classList.remove('fa-times');
+                            hamburgerButton.querySelector('i').classList.add('fa-bars');
+                        }
+                    });
+                });
+            }
+
+            // Smooth scrolling pour les liens de navigation
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    const hrefAttribute = this.getAttribute('href');
+                    // Vérifier si le lien est une ancre sur la même page
+                    if (hrefAttribute.startsWith('#') && document.getElementById(hrefAttribute.substring(1))) {
+                        e.preventDefault();
+                        document.querySelector(hrefAttribute).scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                    // Si c'est un lien vers une autre page avec une ancre (ex: index.html#artistes),
+                    // le comportement par défaut du navigateur (aller à la page et à l'ancre) est conservé.
+                });
+            });
+
+            // Mise à jour dynamique de l'année dans le footer
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+            // Données des services
+            const servicesData = [
+                {
+                    img: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+                    title: "Coloration Signature",
+                    desc: "Sublimez votre chevelure avec nos techniques de coloration exclusives, des balayages lumineux aux teintes vibrantes, tout en préservant la santé de vos cheveux grâce à nos produits haut de gamme.",
+                    price: "À partir de 85€",
+                    delay: "0s"
+                },
+                {
+                    img: "https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+                    title: "Soins Profonds & Rituels Kérastase",
+                    desc: "Offrez une cure de jouvence à vos cheveux avec nos soins profonds personnalisés et nos rituels Kérastase. Hydratation, réparation et brillance garanties pour une chevelure éclatante de santé.",
+                    price: "Dès 50€",
+                    delay: "0.1s"
+                },
+                {
+                    img: "https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+                    title: "Coupe Création & Visagisme",
+                    desc: "Nos stylistes visagistes vous conseillent et réalisent la coupe qui mettra en valeur votre personnalité et la morphologie de votre visage. Pour un style unique qui vous ressemble.",
+                    price: "Femme: 60€ / Homme: 40€",
+                    delay: "0.2s"
+                },
+                {
+                    img: "https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+                    title: "Coiffure Événementielle",
+                    desc: "Mariages, soirées, occasions spéciales... Confiez-nous la réalisation de votre coiffure d'exception. Chignons sophistiqués, tresses bohèmes, ondulations glamour, nous créons le look parfait.",
+                    price: "Sur devis",
+                    delay: "0.3s"
+                },
+                {
+                    img: "https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+                    title: "Barbier & Soins Homme",
+                    desc: "Un espace dédié à l'homme moderne. Taille de barbe précise, rasage traditionnel, soins du visage et coupes tendances pour un style impeccable et une détente absolue.",
+                    price: "À partir de 30€",
+                    delay: "0.4s"
+                },
+                {
+                    img: "https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+                    title: "Massages Relaxants du Cuir Chevelu",
+                    desc: "Évadez-vous avec nos massages du cuir chevelu. Une expérience sensorielle unique qui stimule la microcirculation, favorise la pousse et procure une profonde sensation de bien-être.",
+                    price: "25€ (15 min)",
+                    delay: "0.5s"
+                }
+            ];
+
+            const servicesGrid = document.getElementById('services-grid');
+            let cardsHTML = ""; // Construire le HTML en une fois pour de meilleures perfs
+            servicesData.forEach((service, index) => { // Ajout de l'index pour un délai progressif si besoin
+                const cardHTML = `
+                <div class="service-card-item reveal-on-scroll initial-slide-up" style="transition-delay: ${service.delay};">
+                    <div class="service-card-inner h-full bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100 flex flex-col">
+                        <div class="h-56 overflow-hidden">
+                            <img src="${service.img}" 
+                                 alt="${service.title}" class="w-full h-full object-cover transition duration-500 hover:scale-110">
+                        </div>
+                        <div class="p-6 flex-grow flex flex-col">
+                            <h3 class="title-font text-2xl text-gray-800 mb-3">${service.title}</h3>
+                            <p class="text-gray-600 text-sm mb-5 flex-grow">${service.desc}</p>
+                            <div class="service-price">
+                                ${service.price}
+                            </div>
+                            <button class="btn-shine mt-auto w-full bg-red-700 hover:bg-red-800 text-white px-6 py-3 rounded-full font-medium transition">
+                                En Savoir Plus
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                `;
+                cardsHTML += cardHTML;
+            });
+            servicesGrid.innerHTML = cardsHTML;
+
+            // Traiter les cartes de service nouvellement ajoutées pour l'animation au scroll
+            const serviceCards = servicesGrid.querySelectorAll('.service-card-item.reveal-on-scroll');
+            if (!ACTIVATE_ON_MOBILE_ONLY || isMobile) {
+                // Mobile OU animation activée partout
+                if (scrollObserver) { // S'assurer que l'observer a été initialisé
+                    serviceCards.forEach(card => {
+                        // Les styles initiaux sont déjà sur la classe via CSS, il suffit d'observer
+                        scrollObserver.observe(card);
+                    });
+                }
+            } else {
+                // Desktop et ACTIVATE_ON_MOBILE_ONLY est true: rendre les cartes visibles
+                serviceCards.forEach(card => {
+                    card.classList.add('is-visible');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
