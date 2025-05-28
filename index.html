@@ -173,6 +173,59 @@
             -ms-overflow-style: none;  /* IE and Edge */
             scrollbar-width: none;  /* Firefox */
         }
+
+        /* Styles pour le bouton "Retour en haut" et les bulles de réseaux sociaux */
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #b91c1c; /* Rouge ON h'AIR */
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: none; /* Caché par défaut */
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        .back-to-top:hover {
+            background-color: #991b1b; /* Rouge plus foncé au survol */
+        }
+
+        .social-bubbles {
+            position: fixed;
+            bottom: 20px; /* Changé de top à bottom */
+            left: 20px;
+            /* transform: translateY(-50%); */ /* Supprimé car plus nécessaire pour centrer verticalement */
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .social-bubble {
+            background-color: #b91c1c; /* Rouge ON h'AIR */
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .social-bubble:hover {
+            background-color: #991b1b; /* Rouge plus foncé */
+            transform: scale(1.1);
+        }
     </style>
 </head>
 <body class="bg-amber-50">
@@ -582,6 +635,25 @@
         </div>
     </footer>
 
+    <!-- Bouton Retour en Haut -->
+    <a href="#" class="back-to-top" id="backToTopButton" aria-label="Retour en haut">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
+    <!-- Bulles de Réseaux Sociaux -->
+    <div class="social-bubbles">
+        <a href="https://facebook.com/votrepage" target="_blank" class="social-bubble" aria-label="Facebook">
+            <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="https://instagram.com/votrecompte" target="_blank" class="social-bubble" aria-label="Instagram">
+            <i class="fab fa-instagram"></i>
+        </a>
+        <a href="https://pinterest.com/votreprofil" target="_blank" class="social-bubble" aria-label="Pinterest">
+            <i class="fab fa-pinterest-p"></i>
+        </a>
+        <!-- Ajoutez d'autres réseaux si besoin -->
+    </div>
+
     <script>
         // Animation pour le défilement des prestations
         document.addEventListener('DOMContentLoaded', function() {
@@ -710,6 +782,27 @@
                 });
             }
             document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+            // Gestion du bouton "Retour en haut"
+            const backToTopButton = document.getElementById('backToTopButton');
+
+            if (backToTopButton) {
+                window.addEventListener('scroll', () => {
+                    if (window.pageYOffset > 300) { // Affiche le bouton après 300px de défilement
+                        backToTopButton.style.display = 'flex';
+                    } else {
+                        backToTopButton.style.display = 'none';
+                    }
+                });
+
+                backToTopButton.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+            }
         });
     </script>
 </body>
